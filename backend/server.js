@@ -29,8 +29,21 @@ app.get('/', (_req, res) => {
     uptime: `${Math.floor(process.uptime())}s`,
   });
 });
-
-app.use('/api', reportRoutes);
+ 
+ app.get('/api/debug', (_req, res) => {
+   res.json({
+     mongoConnected: mongoose.connection.readyState === 1,
+     env: {
+       MONGO_URI: !!process.env.MONGO_URI,
+       GOOGLE_API_KEY: !!process.env.GOOGLE_API_KEY,
+       PORT: !!process.env.PORT
+     },
+     nodeVersion: process.version,
+     vercel: !!process.env.VERCEL
+   });
+ });
+ 
+ app.use('/api', reportRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({ success: false, error: 'Route not found' });
@@ -61,6 +74,6 @@ mongoose
   })
   .catch((err) => {
     console.error('❌ MongoDB connection failed:', err.message);
-    console.error('   → Make sure mongod is running, or set MONGO_URI in backend/.env');
-    process.exit(1);
+    console.error('   → Make sure mongod is running, or set MONGO_URI in Vercel settings.');
+    // We do NOT call process.exit(1) on Vercel as it crashes the whole function startup.
   });

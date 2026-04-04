@@ -3,6 +3,10 @@ const { v4: uuidv4 } = require('uuid');
 const Grievance = require('../models/Grievance');
 const { mapDepartment } = require('../utils/departmentMapper');
 
+// Support environments without global fetch
+const nodeFetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const safeFetch = typeof fetch !== 'undefined' ? fetch : nodeFetch;
+
 const router = express.Router();
 
 const VALID_STATUSES = ['Pending', 'In Progress', 'Resolved', 'Rejected', 'Escalated'];
@@ -47,7 +51,7 @@ router.post('/report', async (req, res) => {
           const mimeType = parts[0].match(/:(.*?);/)?.[1] || 'image/jpeg';
           const base64Data = parts[1];
 
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
+          const response = await safeFetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

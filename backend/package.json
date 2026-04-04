@@ -13,7 +13,9 @@
     "express": "^4.19.2",
     "mongoose": "^8.4.1",
     "node-cron": "^4.2.1",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "@google/genai": "^1.48.0",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
