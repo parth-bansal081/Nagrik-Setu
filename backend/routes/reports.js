@@ -579,6 +579,34 @@ router.get('/leaderboard', async (req, res) => {
 
 
 // ─────────────────────────────────────────────────────────
+// DELETE /api/admin/reset-grievances
+// Header: x-admin-secret: <ADMIN_SECRET env var>
+// Wipes ALL grievances from the collection (dev/demo use only)
+// ─────────────────────────────────────────────────────────
+router.delete('/admin/reset-grievances', async (req, res) => {
+  const secret = process.env.ADMIN_SECRET || 'nagrik-admin-reset';
+  const provided = req.headers['x-admin-secret'];
+
+  if (provided !== secret) {
+    return res.status(401).json({ success: false, error: 'Unauthorized: invalid admin secret.' });
+  }
+
+  try {
+    const result = await Grievance.deleteMany({});
+    console.log(`[ADMIN RESET] Deleted ${result.deletedCount} grievances.`);
+    return res.status(200).json({
+      success: true,
+      message: `All ${result.deletedCount} grievances have been deleted.`,
+      deletedCount: result.deletedCount,
+    });
+  } catch (err) {
+    console.error('[ADMIN RESET] Error:', err.message);
+    return res.status(500).json({ success: false, error: 'Internal server error during reset.' });
+  }
+});
+
+
+// ─────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────
 function makeHistoryEntry(action, actor = 'System', note = '') {
@@ -608,3 +636,4 @@ function getDistanceMeters(lat1, lon1, lat2, lon2) {
 }
 
 module.exports = router;
+

@@ -16,6 +16,7 @@ export default function OfficialDashboard() {
   const [loading, setLoading]         = useState(true);
   const [error, setError]             = useState(null);
   const [toast, setToast]             = useState(null);
+  const [resetting, setResetting]     = useState(false);
 
   const fetchReports = useCallback(async () => {
     setLoading(true);
@@ -50,6 +51,26 @@ export default function OfficialDashboard() {
     }
 
     fetchReports();
+  };
+
+  const handleResetAll = async () => {
+    if (!window.confirm('⚠️ Are you sure you want to delete ALL grievances? This cannot be undone.')) return;
+    if (!window.confirm('This will permanently erase every record from the database. Confirm one more time.')) return;
+    setResetting(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/reset-grievances`, {
+        method: 'DELETE',
+        headers: { 'x-admin-secret': 'nagrik-admin-reset' },
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Reset failed');
+      alert(`✅ ${data.message}`);
+      fetchReports();
+    } catch (err) {
+      alert(`❌ Reset failed: ${err.message}`);
+    } finally {
+      setResetting(false);
+    }
   };
 
   const filtered = reports;
@@ -114,9 +135,29 @@ export default function OfficialDashboard() {
                 {loading ? 'Loading…' : `${filtered.length} case${filtered.length !== 1 ? 's' : ''} found`}
               </p>
             </div>
-            <button className="od-refresh-btn" onClick={fetchReports} disabled={loading}>
-              {loading ? '⟳ Loading…' : '⟳ Refresh'}
-            </button>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button className="od-refresh-btn" onClick={fetchReports} disabled={loading || resetting}>
+                {loading ? '⟳ Loading…' : '⟳ Refresh'}
+              </button>
+              <button
+                id="btn-reset-all-grievances"
+                onClick={handleResetAll}
+                disabled={loading || resetting}
+                style={{
+                  background: resetting ? '#555' : '#c0392b',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.5rem 1rem',
+                  fontWeight: 600,
+                  cursor: resetting ? 'not-allowed' : 'pointer',
+                  fontSize: '0.85rem',
+                  transition: 'background 0.2s',
+                }}
+              >
+                {resetting ? '🗑 Resetting…' : '🗑 Reset All Data'}
+              </button>
+            </div>
           </div>
 
 
