@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './TrackingPage.css';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/_/backend';
 
 function getIconForAction(action) {
   const a = action.toLowerCase();
@@ -217,3 +217,4 @@ export default function TrackingPage() {
     </div>
   );
 }
+

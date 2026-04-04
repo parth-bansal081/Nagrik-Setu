@@ -5,7 +5,7 @@ import ActionModal from '../components/ActionModal';
 import DepartmentPerformance from '../components/DepartmentPerformance';
 import './OfficialDashboard.css';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/_/backend';
 const FILTERS = ['All', 'Pending', 'In Progress', 'Resolved'];
 
 export default function OfficialDashboard() {
@@ -180,3 +180,4 @@ export default function OfficialDashboard() {
     </div>
   );
 }
+

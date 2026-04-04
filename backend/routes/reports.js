@@ -2,9 +2,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const Grievance = require('../models/Grievance');
 const { mapDepartment } = require('../utils/departmentMapper');
-const util = require('util');
-const path = require('path');
-const execPromise = util.promisify(require('child_process').exec);
+// Removed child_process since Vercel Serverless doesn't support Python easily
 
 const router = express.Router();
 
@@ -40,14 +38,31 @@ router.post('/report', async (req, res) => {
     let aiSummary = null;
     let baseDeadline = calculateDeadline(category);
 
-    if (imageURL) {
+    if (imageURL && typeof imageURL === 'string' && imageURL.startsWith('data:image')) {
       try {
-        const pythonScript = path.join(__dirname, '../../services/ai_analyzer.py');
-        const { stdout } = await execPromise(`python "${pythonScript}" "${imageURL}"`);
+        const parts = imageURL.split(',');
+        const mimeType = parts[0].match(/:(.*?);/)[1];
+        const base64Data = parts[1];
+
+        const apiKey = process.env.GOOGLE_API_KEY;
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: "Identify the infrastructure issue (Pothole, Water Leak, Streetlight, Garbage). Return ONLY a JSON object with: { 'category': string, 'confidence': float, 'severity': 'Low'|'Medium'|'High', 'summary': string }" },
+                { inlineData: { mimeType, data: base64Data } }
+              ]
+            }],
+            generationConfig: { responseMimeType: "application/json" }
+          })
+        });
+
+        const data = await response.json();
         
-        const jsonMatch = stdout.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const aiData = JSON.parse(jsonMatch[0]);
+        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+          const aiData = JSON.parse(data.candidates[0].content.parts[0].text);
           aiConfidence = aiData.confidence;
           aiSeverity = aiData.severity;
           aiSummary = aiData.summary;
@@ -66,9 +81,11 @@ router.post('/report', async (req, res) => {
             const timeDiff = baseDeadline.getTime() - now;
             baseDeadline = new Date(now + timeDiff * 0.5); // reduce deadline by 50%
           }
+        } else {
+           console.error('[Gemini API Parsing Error]', data.error || 'No valid candidate returned');
         }
       } catch (aiErr) {
-        console.error('[AI Routing Logic Error]', aiErr.message);
+        console.error('[AI Routing Fetch Logic Error]', aiErr.message);
       }
     }
 

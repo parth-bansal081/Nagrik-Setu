@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './LeaderboardPage.css';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/_/backend';
 
 export default function LeaderboardPage() {
   const [board, setBoard] = useState([]);
@@ -130,3 +130,4 @@ export default function LeaderboardPage() {
     </div>
   );
 }
+

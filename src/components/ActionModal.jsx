@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './ActionModal.css';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/_/backend';
 
 export default function ActionModal({ report, onClose, onUpdated }) {
   const [afterPhotoFile, setAfterPhotoFile] = useState(null);
@@ -220,3 +220,4 @@ export default function ActionModal({ report, onClose, onUpdated }) {
     </div>
   );
 }
+

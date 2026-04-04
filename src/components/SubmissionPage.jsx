@@ -36,7 +36,7 @@ function MapClickHandler({ onMapClick }) {
 
 const CATEGORIES = ['Roads', 'Water Supply', 'Electricity', 'Others'];
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/_/backend';
 const DEMO_USER_ID = 'citizen_demo_001';
 
 export default function SubmissionPage() {
@@ -74,13 +74,23 @@ export default function SubmissionPage() {
     setApiError(null);
     setResult(null);
 
+    let base64Image = '';
+    if (photoFile) {
+      const reader = new FileReader();
+      base64Image = await new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(photoFile);
+      });
+    }
+
     const payload = {
       userId:      DEMO_USER_ID,
       latitude:    parseFloat(markerPos.lat.toFixed(6)),
       longitude:   parseFloat(markerPos.lng.toFixed(6)),
       category,
       description,
-      imageURL:    '',
+      imageURL:    base64Image,
     };
 
     console.log('📤 Submitting grievance:', JSON.stringify(payload, null, 2));
@@ -373,3 +383,4 @@ export default function SubmissionPage() {
     </div>
   );
 }
+
