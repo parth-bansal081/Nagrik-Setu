@@ -57,7 +57,19 @@ router.post('/report', async (req, res) => {
             body: JSON.stringify({
               contents: [{
                 parts: [
-                  { text: "Identify the infrastructure issue (Pothole, Water Leak, Streetlight, Garbage). Return ONLY a JSON object with: { 'category': string, 'confidence': float, 'severity': 'Low'|'Medium'|'High', 'summary': string }" },
+                  { text: `You are a strict AI validator for a civic grievance platform.
+Analyze this image and determine if it shows a REAL, outdoor infrastructure issue visible in the physical world — such as a pothole, broken streetlight, water leak, or garbage on a street.
+
+REJECT (set isValidInfrastructure: false) if the image is:
+- A screenshot of a phone/computer screen
+- A selfie or portrait photo
+- An indoor photo
+- A document, text, or diagram
+- A meme, artwork, or cartoon
+- Anything not showing a real outdoor infrastructure problem
+
+Return ONLY a valid JSON object with no markdown:
+{ "isValidInfrastructure": boolean, "category": string, "confidence": float, "severity": "Low"|"Medium"|"High", "summary": string }` },
                   { inlineData: { mimeType, data: base64Data } }
                 ]
               }],
@@ -71,31 +83,41 @@ router.post('/report', async (req, res) => {
           }
 
           const data = await response.json();
-          
-          if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-          const aiData = JSON.parse(data.candidates[0].content.parts[0].text);
-          aiConfidence = aiData.confidence;
-          aiSeverity = aiData.severity;
-          aiSummary = aiData.summary;
 
-          if (aiConfidence > 0.6 && aiData.category) {
-            const aiCatLow = aiData.category.toLowerCase();
-            if (aiCatLow.includes('pothole')) finalCategory = 'Roads';
-            else if (aiCatLow.includes('water')) finalCategory = 'Water Supply';
-            else if (aiCatLow.includes('streetlight')) finalCategory = 'Electricity';
-            else if (aiCatLow.includes('garbage')) finalCategory = 'Others';
+          if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+            const aiData = JSON.parse(data.candidates[0].content.parts[0].text);
+
+            // ── HARD GATE: Reject if AI says this is not a real infrastructure photo ──
+            if (aiData.isValidInfrastructure === false) {
+              console.warn('[AI Validator] Rejected image — not a valid infrastructure photo.');
+              return res.status(422).json({
+                success: false,
+                error: 'Invalid image. Please upload a real photo of an infrastructure issue (pothole, water leak, broken streetlight, or garbage). Screenshots and unrelated photos are not accepted.'
+              });
+            }
+
+            aiConfidence = aiData.confidence;
+            aiSeverity = aiData.severity;
+            aiSummary = aiData.summary;
+
+            if (aiConfidence > 0.6 && aiData.category) {
+              const aiCatLow = aiData.category.toLowerCase();
+              if (aiCatLow.includes('pothole')) finalCategory = 'Roads';
+              else if (aiCatLow.includes('water')) finalCategory = 'Water Supply';
+              else if (aiCatLow.includes('streetlight')) finalCategory = 'Electricity';
+              else if (aiCatLow.includes('garbage')) finalCategory = 'Others';
+            }
+
+            if (aiSeverity === 'High') {
+              priority = 1;
+              const now = Date.now();
+              const timeDiff = baseDeadline.getTime() - now;
+              baseDeadline = new Date(now + timeDiff * 0.5); // reduce deadline by 50%
+            }
+          } else {
+            console.error('[Gemini API Parsing Error]', data.error || 'No valid candidate returned');
           }
-          
-          if (aiSeverity === 'High') {
-            priority = 1;
-            const now = Date.now();
-            const timeDiff = baseDeadline.getTime() - now;
-            baseDeadline = new Date(now + timeDiff * 0.5); // reduce deadline by 50%
-          }
-        } else {
-           console.error('[Gemini API Parsing Error]', data.error || 'No valid candidate returned');
-        }
-      } // End of else (apiKey)
+        } // End of else (apiKey)
       } catch (aiErr) {
         console.error('[AI Routing Fetch Logic Error]', aiErr.message);
       }
