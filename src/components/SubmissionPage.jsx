@@ -5,7 +5,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './SubmissionPage.css';
 
-// Fix Leaflet's default icon path issue with Vite bundlers
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -13,7 +13,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-// Custom red draggable marker icon
+
 const redIcon = new L.Icon({
   iconUrl:
     'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -24,7 +24,7 @@ const redIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-// Sub-component: handles map click to place/update marker
+
 function MapClickHandler({ onMapClick }) {
   useMapEvents({
     click(e) {
@@ -37,7 +37,6 @@ function MapClickHandler({ onMapClick }) {
 const CATEGORIES = ['Roads', 'Water Supply', 'Electricity', 'Others'];
 
 const API_BASE = 'http://localhost:5000';
-// Hardcoded demo userId — replace with real auth later
 const DEMO_USER_ID = 'citizen_demo_001';
 
 export default function SubmissionPage() {
@@ -46,14 +45,14 @@ export default function SubmissionPage() {
   const [description, setDescription] = useState('');
   const [photoFile, setPhotoFile] = useState(null);
 
-  // Submission lifecycle states
+
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);   // { grievanceId, departmentName, status }
   const [apiError, setApiError] = useState(null);
 
   const markerRef = useRef(null);
 
-  // When marker is dragged to a new position, update state
+
   const handleMarkerDrag = useCallback(() => {
     const m = markerRef.current;
     if (m) {
@@ -64,7 +63,7 @@ export default function SubmissionPage() {
 
   const handleMapClick = (latlng) => {
     setMarkerPos({ lat: latlng.lat, lng: latlng.lng });
-    // Clear any previous result when user re-pins
+
     setResult(null);
     setApiError(null);
   };
@@ -81,7 +80,7 @@ export default function SubmissionPage() {
       longitude:   parseFloat(markerPos.lng.toFixed(6)),
       category,
       description,
-      imageURL:    '',   // future: upload file to storage, store URL here
+      imageURL:    '',
     };
 
     console.log('📤 Submitting grievance:', JSON.stringify(payload, null, 2));
@@ -102,7 +101,7 @@ export default function SubmissionPage() {
       console.log('✅ Grievance filed:', data);
       setResult(data);
 
-      // Reset form fields after success
+
       setCategory('');
       setDescription('');
       setPhotoFile(null);
@@ -118,7 +117,7 @@ export default function SubmissionPage() {
 
   return (
     <div className="ns-page">
-      {/* ── Header ── */}
+
       <header className="ns-header">
         <div className="ns-header-inner">
           <div className="ns-logo">
@@ -132,13 +131,14 @@ export default function SubmissionPage() {
             <Link to="/">Home</Link>
             <Link to="/" className="ns-nav-active">Report</Link>
             <Link to="/track" className="ns-nav-track">📍 Track</Link>
+            <Link to="/leaderboard" className="ns-nav-leaderboard">🏆 Leaderboard</Link>
             <Link to="/official" className="ns-nav-official">🏛️ Official Dashboard</Link>
           </nav>
         </div>
       </header>
 
       <main className="ns-main">
-        {/* ── Hero Banner ── */}
+
         <section className="ns-hero">
           <h2>Report a Local Issue</h2>
           <p>
@@ -147,7 +147,7 @@ export default function SubmissionPage() {
           </p>
         </section>
 
-        {/* ── Map Card ── */}
+
         <section className="ns-card ns-map-card">
           <div className="ns-card-header">
             <span className="ns-card-icon">📍</span>
@@ -180,7 +180,7 @@ export default function SubmissionPage() {
               )}
             </MapContainer>
 
-            {/* Coordinates badge */}
+
             <div className={`ns-coords-badge ${markerPos ? 'ns-coords-badge--active' : ''}`}>
               {markerPos ? (
                 <>
@@ -197,7 +197,7 @@ export default function SubmissionPage() {
           </div>
         </section>
 
-        {/* ── Form Card ── */}
+
         <section className="ns-card ns-form-card">
           <div className="ns-card-header">
             <span className="ns-card-icon">📝</span>
@@ -208,7 +208,7 @@ export default function SubmissionPage() {
           </div>
 
           <form className="ns-form" onSubmit={handleSubmit} noValidate>
-            {/* Category */}
+
             <div className="ns-field">
               <label htmlFor="category" className="ns-label">
                 Category <span className="ns-required">*</span>
@@ -230,7 +230,7 @@ export default function SubmissionPage() {
               </div>
             </div>
 
-            {/* Description */}
+
             <div className="ns-field">
               <label htmlFor="description" className="ns-label">
                 Description <span className="ns-required">*</span>
@@ -247,7 +247,7 @@ export default function SubmissionPage() {
               <span className="ns-char-count">{description.length} / 1000 characters</span>
             </div>
 
-            {/* File upload */}
+
             <div className="ns-field">
               <label htmlFor="photo" className="ns-label">Upload Evidence Photo</label>
               <label htmlFor="photo" className="ns-file-label">
@@ -291,7 +291,6 @@ export default function SubmissionPage() {
               </div>
             )}
 
-            {/* Submit */}
             <button
               type="submit"
               className={`ns-submit-btn ${loading ? 'ns-submit-btn--loading' : ''}`}
@@ -303,7 +302,6 @@ export default function SubmissionPage() {
             </button>
           </form>
 
-          {/* ── Success Card ── */}
           {result && (
             <div className="ns-success-card">
               <div className="ns-success-icon">✅</div>
@@ -346,6 +344,27 @@ export default function SubmissionPage() {
             </div>
           )}
         </section>
+        <section className="ns-faq">
+          <div className="ns-card-header">
+            <span className="ns-card-icon">💡</span>
+            <h3>Help & FAQ</h3>
+          </div>
+          <div className="ns-faq-content">
+            <details>
+              <summary>How does Auto-Routing work?</summary>
+              <p>When you submit a grievance, our AI-powered engine immediately scans the category and location, automatically routing the ticket to the correct government department (e.g., PWD for Roads, Jal Shakti for Water).</p>
+            </details>
+            <details>
+              <summary>What happens if my issue isn't resolved in time?</summary>
+              <p>Nagrik Setu features an Escalation Engine! Every category has a strict deadline (e.g., 24h for Water, 7 days for Roads). If an official misses the deadline, the ticket is instantly escalated to a Supervising Official, and you will be notified.</p>
+            </details>
+            <details>
+              <summary>Why do you ask for my Mood on the tracking page?</summary>
+              <p>If an issue is taking too long to resolve, you can log your mood as "Frustrated" or "Unhappy". This instantly tags your ticket as High Priority on the Official Dashboard with a red pulsing alert!</p>
+            </details>
+          </div>
+        </section>
+
       </main>
 
       <footer className="ns-footer">

@@ -16,18 +16,27 @@ function getIconForAction(action) {
   return '📌';
 }
 
+function getSocialImpactMessage(category) {
+  switch (category) {
+    case 'Water Supply': return "Because of your report, 50 families now have clean water access again.";
+    case 'Electricity': return "Your report helped restore power and illumination to hundreds of residents.";
+    case 'Roads': return "Your report helped make this street 20% safer tonight.";
+    default: return "Your civic participation has directly improved our community's well-being.";
+  }
+}
+
 export default function TrackingPage() {
   const [searchId, setSearchId] = useState('');
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Notifications
+
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const pollIntervalRef = useRef(null);
   const lastStatusRef = useRef(null);
 
-  // Check initial notification perm
+
   useEffect(() => {
     if ('Notification' in window && Notification.permission === 'granted') {
       setNotificationsEnabled(true);
@@ -40,7 +49,7 @@ export default function TrackingPage() {
       return;
     }
     if (Notification.permission === 'granted') {
-      // Toggle off
+
       setNotificationsEnabled(false);
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
     } else if (Notification.permission !== 'denied') {
@@ -72,7 +81,7 @@ export default function TrackingPage() {
     }
   };
 
-  // Background polling if notifications enabled
+
   useEffect(() => {
     if (notificationsEnabled && report) {
       pollIntervalRef.current = setInterval(async () => {
@@ -89,9 +98,9 @@ export default function TrackingPage() {
             });
           }
         } catch (e) {
-          // silent background fail
+
         }
-      }, 5000); // 5 sec poll for rapid demo purposes
+      }, 5000);
     } else {
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
     }
@@ -191,6 +200,14 @@ export default function TrackingPage() {
                   <button onClick={() => sendMood('Unhappy')} className="tp-mood-btn tp-mood-sad">😞 Unhappy</button>
                   <button onClick={() => sendMood('Patient')} className="tp-mood-btn tp-mood-neutral">😐 Still Patient</button>
                 </div>
+              </div>
+            )}
+
+            {report.status === 'Resolved' && (
+              <div className="tp-social-impact">
+                <h3>🌱 Real-World Impact Achieved</h3>
+                <p>{getSocialImpactMessage(report.category)}</p>
+                <div className="tp-impact-footer">Thank you for making a difference!</div>
               </div>
             )}
             

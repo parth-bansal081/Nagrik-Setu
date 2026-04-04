@@ -2,7 +2,6 @@ const cron = require('node-cron');
 const Grievance = require('../models/Grievance');
 
 function startEscalationJob() {
-  // Run every minute for demonstration (in production, typically hourly '0 * * * *')
   cron.schedule('* * * * *', async () => {
     try {
       const now = new Date();

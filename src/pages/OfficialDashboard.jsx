@@ -15,6 +15,7 @@ export default function OfficialDashboard() {
   const [selectedReport, setSelected] = useState(null);
   const [loading, setLoading]         = useState(true);
   const [error, setError]             = useState(null);
+  const [toast, setToast]             = useState(null);
 
   const fetchReports = useCallback(async () => {
     setLoading(true);
@@ -35,20 +36,27 @@ export default function OfficialDashboard() {
 
   useEffect(() => { fetchReports(); }, [fetchReports]);
 
-  // When an action is taken in the modal, update the card in-place + refresh stats
+
   const handleUpdated = (updatedReport) => {
     setReports((prev) =>
       prev.map((r) => (r.grievanceId === updatedReport.grievanceId ? updatedReport : r))
     );
-    // Re-fetch to get fresh stats counts
+
+    // Success Toast Logic
+    if (updatedReport.status === 'Resolved') {
+      const score = Math.floor(Math.random() * 200) + 50; // Mock impact score
+      setToast({ score, txId: updatedReport.grievanceId.slice(-6) });
+      setTimeout(() => setToast(null), 4000);
+    }
+
     fetchReports();
   };
 
-  const filtered = reports; // server already filters; kept for clarity
+  const filtered = reports;
 
   return (
     <div className="od-page">
-      {/* ── Top Navigation ── */}
+
       <header className="od-topbar">
         <div className="od-topbar-inner">
           <div className="od-logo">
@@ -66,7 +74,7 @@ export default function OfficialDashboard() {
       </header>
 
       <div className="od-layout">
-        {/* ── Sidebar ── */}
+
         <aside className="od-sidebar">
           <p className="od-sidebar-title">Filter by Status</p>
           <nav className="od-sidebar-nav">
@@ -90,13 +98,13 @@ export default function OfficialDashboard() {
 
           <div className="od-sidebar-divider" />
 
-          {/* Performance widget in sidebar */}
+
           <DepartmentPerformance stats={stats} />
         </aside>
 
-        {/* ── Main content ── */}
+
         <main className="od-main">
-          {/* Toolbar */}
+
           <div className="od-toolbar">
             <div>
               <h1 className="od-main-title">
@@ -111,7 +119,7 @@ export default function OfficialDashboard() {
             </button>
           </div>
 
-          {/* Error */}
+
           {error && (
             <div className="od-error">
               ⚠️ {error}
@@ -119,14 +127,14 @@ export default function OfficialDashboard() {
             </div>
           )}
 
-          {/* Loading skeleton */}
+
           {loading && !error && (
             <div className="od-grid">
               {[1, 2, 3, 4, 5, 6].map((i) => <div key={i} className="od-skeleton" />)}
             </div>
           )}
 
-          {/* Empty state */}
+
           {!loading && !error && filtered.length === 0 && (
             <div className="od-empty">
               <span className="od-empty-icon">📭</span>
@@ -135,7 +143,7 @@ export default function OfficialDashboard() {
             </div>
           )}
 
-          {/* Cards grid */}
+
           {!loading && !error && filtered.length > 0 && (
             <div className="od-grid">
               {filtered.map((report) => (
@@ -150,13 +158,24 @@ export default function OfficialDashboard() {
         </main>
       </div>
 
-      {/* ── Action Modal ── */}
+
       {selectedReport && (
         <ActionModal
           report={selectedReport}
           onClose={() => setSelected(null)}
           onUpdated={handleUpdated}
         />
+      )}
+
+      {/* Success Toast */}
+      {toast && (
+        <div className="od-success-toast">
+          <div className="od-toast-icon">🏆</div>
+          <div>
+            <strong>Well Done!</strong> Case Resolved.
+            <div className="od-toast-score">Civic Impact Score: +{toast.score}</div>
+          </div>
+        </div>
       )}
     </div>
   );

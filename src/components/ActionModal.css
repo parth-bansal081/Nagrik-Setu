@@ -123,7 +123,7 @@
   gap: 0.65rem;
 }
 
-.am-action--in-progress { border-color: #bfdbfe; background: #f0f7ff; }
+.am-action--in-progress { border-color: #cbd5e1; background: #f0f7ff; }
 .am-action--resolve     { border-color: #bbf7d0; background: #f0fdf4; }
 
 .am-action-info {
@@ -160,7 +160,7 @@
 }
 
 .am-btn--inprogress {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: #fff;
 }
 
@@ -242,7 +242,7 @@
   min-width: 0;
 }
 
-.am-input:focus { border-color: #3b82f6; }
+.am-input:focus { border-color: #1e40af; }
 
 .am-btn--neutral {
   width: auto;

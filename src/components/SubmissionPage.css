@@ -3,9 +3,9 @@
   --navy: #0f2a54;
   --navy-dark: #081a38;
   --navy-mid: #1a3a6e;
-  --accent: #2563eb;
-  --accent-light: #3b82f6;
-  --accent-hover: #1d4ed8;
+  --accent: #1e3a8a;
+  --accent-light: #1e40af;
+  --accent-hover: #0f172a;
   --gold: #f59e0b;
   --white: #ffffff;
   --bg: #f0f4fc;
@@ -359,7 +359,7 @@ body {
 
 .ns-file-label:hover {
   border-color: var(--accent);
-  background: #eff6ff;
+  background: #f8fafc;
 }
 
 .ns-file-icon { font-size: 1.4rem; flex-shrink: 0; }
@@ -487,8 +487,8 @@ body {
   display: flex;
   gap: 0.6rem;
   align-items: flex-start;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
   border-radius: 7px;
   padding: 0.65rem 0.85rem;
   margin-bottom: 0.8rem;
@@ -506,7 +506,7 @@ body {
 
 .ns-proximity-alert p {
   font-size: 0.77rem;
-  color: #1d4ed8;
+  color: #0f172a;
   margin-bottom: 0.25rem;
   line-height: 1.4;
 }
@@ -605,6 +605,47 @@ body {
   padding: 0.1rem 0.65rem;
   font-size: 0.75rem;
   font-weight: 700;
+}
+
+/* ── FAQ ── */
+.ns-faq {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  margin-top: 2rem;
+  padding: 1.5rem 2rem;
+  border: 1px solid #e2e8f0;
+}
+
+.ns-faq-content {
+  margin-top: 1rem;
+}
+
+.ns-faq-content details {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ns-faq-content details:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ns-faq-content summary {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0f172a;
+  cursor: pointer;
+  outline: none;
+}
+
+.ns-faq-content p {
+  color: #475569;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 /* ─── Footer ─────────────────────────────────────────────── */

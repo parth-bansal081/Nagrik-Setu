@@ -59,7 +59,7 @@ export default function ActionModal({ report, onClose, onUpdated }) {
       }
       body.afterPhotoURL = afterPhotoFile.name;
 
-      // Grab official's geolocation for location verification
+
       try {
         const pos = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 3000 });
@@ -93,7 +93,7 @@ export default function ActionModal({ report, onClose, onUpdated }) {
   return (
     <div className="am-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="am-modal">
-        {/* Header */}
+
         <div className="am-header">
           <div>
             <h2 className="am-title">Take Action</h2>
@@ -107,7 +107,7 @@ export default function ActionModal({ report, onClose, onUpdated }) {
           <button className="am-close" onClick={onClose}>✕</button>
         </div>
 
-        {/* Summary */}
+
         <div className="am-summary">
           <div className="am-summary-row">
             <span className="am-label">Category</span>
@@ -127,10 +127,10 @@ export default function ActionModal({ report, onClose, onUpdated }) {
           </div>
         </div>
 
-        {/* Divider */}
+
         <p className="am-section-title">Update Status</p>
 
-        {/* Action 1: In Progress */}
+
         <div className="am-action-card am-action--in-progress">
           <div className="am-action-info">
             <span className="am-action-icon">🔵</span>
@@ -148,7 +148,7 @@ export default function ActionModal({ report, onClose, onUpdated }) {
           </button>
         </div>
 
-        {/* Action 2: Resolved */}
+
         <div className="am-action-card am-action--resolve">
           <div className="am-action-info">
             <span className="am-action-icon">✅</span>
@@ -183,7 +183,7 @@ export default function ActionModal({ report, onClose, onUpdated }) {
           </button>
         </div>
 
-        {/* Action 3: Internal Comment */}
+
         <div className="am-action-card am-action--comment">
           <div className="am-action-info">
             <span className="am-action-icon">💬</span>
@@ -198,7 +198,7 @@ export default function ActionModal({ report, onClose, onUpdated }) {
           </div>
         </div>
 
-        {/* Action 4: Resource Request (WOW Factor) */}
+
         <div className="am-action-card am-action--resource">
           <div className="am-action-info">
             <span className="am-action-icon">🏗️</span>
@@ -214,7 +214,7 @@ export default function ActionModal({ report, onClose, onUpdated }) {
           </div>
         </div>
 
-        {/* Error */}
+
         {error && <div className="am-error">⚠️ {error}</div>}
       </div>
     </div>

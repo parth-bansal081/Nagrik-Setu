@@ -36,13 +36,13 @@
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
 }
 .tp-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px #bfdbfe;
+  border-color: #1e40af;
+  box-shadow: 0 0 0 4px #cbd5e1;
 }
 
 .tp-search-btn {
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: white;
   border: none;
   border-radius: 12px;
@@ -148,7 +148,7 @@
 }
 
 .tp-status-Pending { background: #fef3c7; color: #d97706; }
-.tp-status-InProgress { background: #dbeafe; color: #2563eb; }
+.tp-status-InProgress { background: #e2e8f0; color: #1e3a8a; }
 .tp-status-Resolved { background: #dcfce3; color: #16a34a; }
 .tp-status-Rejected { background: #fee2e2; color: #dc2626; }
 .tp-status-Escalated { background: #fce7f3; color: #db2777; }
@@ -230,7 +230,7 @@
   border-radius: 6px;
   font-size: 0.9rem;
   color: #334155;
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid #1e40af;
   font-family: monospace;
 }
 
@@ -265,3 +265,46 @@
 .tp-mood-angry { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
 .tp-mood-sad { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a;}
 .tp-mood-neutral { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+
+/* Social Impact View */
+.tp-social-impact {
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  margin-top: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.4);
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.tp-social-impact h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #60a5fa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tp-social-impact p {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #f1f5f9;
+}
+
+.tp-impact-footer {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #93c5fd;
+  font-weight: 700;
+  border-top: 1px solid rgba(147,197,253,0.2);
+  padding-top: 1rem;
+}

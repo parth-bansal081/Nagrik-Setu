@@ -37,11 +37,11 @@ export default function CaseCard({ report, onAction }) {
   const isMaster  = linkedReportIds.length > 0;
   const isLinked  = !!masterTicketId;
 
-  // Deadline calculations
+
   const now = new Date();
   const createdDate = new Date(createdAt);
   const deadlineDate = deadline ? new Date(deadline) : null;
-  let isHighPriority = !!report.isHighPriority; // explicitly consider boolean flag or deadline elapsed
+  let isHighPriority = !!report.isHighPriority;
   let deadlineText = '';
 
   if (deadlineDate && status !== 'Resolved' && status !== 'Rejected') {
@@ -62,7 +62,7 @@ export default function CaseCard({ report, onAction }) {
 
   return (
     <div className={`cc-card ${status === 'Resolved' ? 'cc-card--resolved' : ''} ${isMaster ? 'cc-card--master' : ''} ${isHighPriority ? 'cc-card--high-priority' : ''}`}>
-      {/* Master ticket crown badge */}
+
       {isMaster && (
         <div className="cc-master-ribbon">
           👑 Master Ticket · {linkedReportIds.length} duplicate{linkedReportIds.length !== 1 ? 's' : ''} linked
@@ -74,7 +74,7 @@ export default function CaseCard({ report, onAction }) {
         </div>
       )}
 
-      {/* Header row */}
+
       <div className="cc-header">
         <div className="cc-id-row">
           <span className="cc-category-icon">{CATEGORY_ICONS[category] || '📋'}</span>
@@ -87,7 +87,7 @@ export default function CaseCard({ report, onAction }) {
         </div>
       </div>
 
-      {/* Photo + description */}
+
       <div className="cc-body">
         <div className="cc-photo-wrap">
           {imageURL ? (
@@ -114,7 +114,7 @@ export default function CaseCard({ report, onAction }) {
         </div>
       </div>
 
-      {/* Citizen Feedback display */}
+
       {feedback && (
         <div className="cc-feedback-wrap">
           <span className="cc-feedback-label">Citizen Feedback:</span>
@@ -123,14 +123,14 @@ export default function CaseCard({ report, onAction }) {
         </div>
       )}
 
-      {/* History Timeline */}
+
       {history.length > 0 && (
         <div className="cc-timeline-wrap">
           <HistoryTimeline history={history} />
         </div>
       )}
 
-      {/* Footer */}
+
       <div className="cc-footer">
         <button
           className="cc-action-btn"
