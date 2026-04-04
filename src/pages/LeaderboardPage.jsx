@@ -31,13 +31,13 @@ export default function LeaderboardPage() {
     <div className="lb-page">
       <header className="lb-header">
         <div className="lb-header-inner">
-          <div className="lb-logo">
-            <span className="lb-logo-icon">🏛️</span>
+          <Link to="/" className="lb-logo decoration-transparent">
+            <img src="/logo.png" alt="Nagrik Setu Logo" className="h-12 w-auto object-contain" />
             <div>
               <h1 className="lb-logo-title">Nagrik Setu</h1>
               <p className="lb-logo-sub">Public Accountability</p>
             </div>
-          </div>
+          </Link>
           <nav className="lb-nav">
             <Link to="/">Home</Link>
             <Link to="/track">Track</Link>

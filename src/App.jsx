@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SubmissionPage from './components/SubmissionPage';
 import OfficialDashboard from './pages/OfficialDashboard';
 import TrackingPage from './components/TrackingPage';
-import GrievanceTrackPage from './pages/GrievanceTrackPage';
+import TrackingPageTailwind from './pages/TrackingPageTailwind';
+import AdminDashboardTailwind from './pages/AdminDashboardTailwind';
 import LeaderboardPage from './pages/LeaderboardPage';
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
         <Route path="/"             element={<SubmissionPage />} />
         <Route path="/official"     element={<OfficialDashboard />} />
         <Route path="/track"        element={<TrackingPage />} />
-        <Route path="/track/:id"    element={<GrievanceTrackPage />} />
+        <Route path="/track/:id"    element={<TrackingPageTailwind />} />
+        <Route path="/admin"        element={<AdminDashboardTailwind />} />
         <Route path="/leaderboard"  element={<LeaderboardPage />} />
       </Routes>
     </BrowserRouter>

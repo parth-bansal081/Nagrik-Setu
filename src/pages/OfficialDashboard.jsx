@@ -81,7 +81,7 @@ export default function OfficialDashboard() {
       <header className="od-topbar">
         <div className="od-topbar-inner">
           <div className="od-logo">
-            <span>🏛️</span>
+            <img src="/logo.png" alt="Nagrik Setu Logo" className="h-8 w-8 object-contain brightness-0 invert" />
             <div>
               <span className="od-logo-name">Nagrik Setu</span>
               <span className="od-logo-role">Official Dashboard</span>

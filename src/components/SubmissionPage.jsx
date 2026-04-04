@@ -136,13 +136,13 @@ export default function SubmissionPage() {
 
       <header className="ns-header">
         <div className="ns-header-inner">
-          <div className="ns-logo">
-            <span className="ns-logo-icon">🏛️</span>
-            <div>
+          <Link to="/" className="ns-logo decoration-transparent">
+            <img src="/logo.png" alt="Nagrik Setu Logo" className="h-12 w-auto object-contain" />
+            <div className="hidden sm:block">
               <h1 className="ns-logo-title">Nagrik Setu</h1>
               <p className="ns-logo-sub">Citizen–Government Bridge</p>
             </div>
-          </div>
+          </Link>
           <nav className="ns-nav">
             <Link to="/">Home</Link>
             <Link to="/" className="ns-nav-active">Report</Link>
