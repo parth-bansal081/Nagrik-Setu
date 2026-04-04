@@ -102,10 +102,16 @@ export default function SubmissionPage() {
         body:    JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get('content-type');
+      let data = {};
+      
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      }
 
       if (!res.ok || !data.success) {
-        throw new Error(data.error || `Server error ${res.status}`);
+        const errMsg = data.error || `Server error (${res.status})`;
+        throw new Error(errMsg);
       }
 
       console.log('✅ Grievance filed:', data);
