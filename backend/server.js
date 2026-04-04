@@ -31,42 +31,55 @@ app.get('/', (_req, res) => {
   });
 });
  
- app.get('/api/debug', async (_req, res) => {
-   const uri = process.env.MONGO_URI || '';
-   const maskedUri = uri.length > 20 
-     ? `${uri.substring(0, 15)}...${uri.substring(uri.length - 5)}` 
-     : 'Too short or empty';
+// Define routes in a separate router to support multiple mount points
+const apiRouter = express.Router();
 
-   // Force verification of connection
-   let errorInfo = lastMongoError;
-   if (mongoose.connection.readyState !== 1) {
-     try {
-       await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
-       errorInfo = null;
-     } catch (err) {
-       errorInfo = err.message;
-     }
-   }
+apiRouter.get('/debug', async (_req, res) => {
+  const uri = process.env.MONGO_URI || '';
+  const maskedUri = uri.length > 20 
+    ? `${uri.substring(0, 15)}...${uri.substring(uri.length - 5)}` 
+    : 'Too short or empty';
 
-   res.json({
-     mongoConnected: mongoose.connection.readyState === 1,
-     mongoReadyState: mongoose.connection.readyState,
-     mongoError: errorInfo,
-     uriPreview: maskedUri,
-     env: {
-       MONGO_URI: !!process.env.MONGO_URI,
-       GOOGLE_API_KEY: !!process.env.GOOGLE_API_KEY,
-       PORT: !!process.env.PORT
-     },
-     nodeVersion: process.version,
-     vercel: !!process.env.VERCEL
-   });
- });
- 
- app.use('/api', reportRoutes);
+  // Force verification of connection
+  let errorInfo = lastMongoError;
+  if (mongoose.connection.readyState !== 1) {
+    try {
+      await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
+      errorInfo = null;
+    } catch (err) {
+      errorInfo = err.message;
+    }
+  }
 
-app.use((_req, res) => {
-  res.status(404).json({ success: false, error: 'Route not found' });
+  res.json({
+    mongoConnected: mongoose.connection.readyState === 1,
+    mongoReadyState: mongoose.connection.readyState,
+    mongoError: errorInfo,
+    uriPreview: maskedUri,
+    env: {
+      MONGO_URI: !!process.env.MONGO_URI,
+      GOOGLE_API_KEY: !!process.env.GOOGLE_API_KEY,
+      PORT: !!process.env.PORT
+    },
+    nodeVersion: process.version,
+    vercel: !!process.env.VERCEL
+  });
+});
+
+// Attach the existing report routes to the common apiRouter
+apiRouter.use('/', reportRoutes);
+
+// Mount the apiRouter on both paths to satisfy local and Vercel environments
+app.use('/api', apiRouter);
+app.use('/_/backend/api', apiRouter);
+
+app.use((req, res) => {
+  res.status(404).json({ 
+    success: false, 
+    error: 'Route not found', 
+    attemptedUrl: req.url,
+    originalUrl: req.originalUrl
+  });
 });
 
 app.use((err, _req, res, _next) => {
