@@ -32,9 +32,16 @@ app.get('/', (_req, res) => {
 });
  
  app.get('/api/debug', (_req, res) => {
+   const uri = process.env.MONGO_URI || '';
+   const maskedUri = uri.length > 20 
+     ? `${uri.substring(0, 15)}...${uri.substring(uri.length - 5)}` 
+     : 'Too short or empty';
+
    res.json({
      mongoConnected: mongoose.connection.readyState === 1,
+     mongoReadyState: mongoose.connection.readyState, // 0=disc, 1=conn, 2=connecting, 3=disc-ing
      mongoError: lastMongoError,
+     uriPreview: maskedUri,
      env: {
        MONGO_URI: !!process.env.MONGO_URI,
        GOOGLE_API_KEY: !!process.env.GOOGLE_API_KEY,
@@ -61,22 +68,21 @@ const getEscalationJob = () => require('./jobs/escalationJob');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nagrik_setu';
  
-let lastMongoError = null;
+let lastMongoError = "Connecting..."; // Initial state
 
+console.log('Attempting MongoDB connection...');
 mongoose
   .connect(MONGO_URI, { 
     serverSelectionTimeoutMS: 5000, 
-    socketTimeoutMS: 45000 
+    connectTimeoutMS: 10000
   })
   .then(() => {
-    lastMongoError = null; // Reset on success
-    // We do NOT call process.exit(1) on Vercel as it crashes the whole function startup.
+    lastMongoError = null;
+    console.log('✅ MongoDB Connected Successfuly');
   })
   .catch((err) => {
     lastMongoError = err.message;
     console.error('❌ MongoDB connection failed:', err.message);
-    console.error('   → Make sure mongod is running, or set MONGO_URI in Vercel settings.');
-    // We do NOT call process.exit(1) on Vercel as it crashes the whole function startup.
   });
 
 const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
