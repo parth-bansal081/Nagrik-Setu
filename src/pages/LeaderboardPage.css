@@ -163,9 +163,71 @@
 .lb-metric-time { text-align: right; }
 .lb-metric-time .lb-metric-val { font-size: 1.5rem; color: #1e40af;}
 
+/* Help & FAQ Section */
+.lb-faq {
+  margin-top: 4rem;
+  padding: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.lb-faq-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.lb-faq-header h2 {
+  font-size: 2rem;
+  color: #0f172a;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+}
+
+.lb-faq-header p {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.lb-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.lb-faq-item {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: transform 0.2s;
+}
+
+.lb-faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+}
+
+.lb-faq-item h4 {
+  margin: 0 0 0.75rem 0;
+  color: #0f172a;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.lb-faq-item p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
 @media (max-width: 768px) {
   .lb-pulse { grid-template-columns: 1fr; }
   .lb-dept-card { flex-direction: column; text-align: center; gap: 1rem; }
   .lb-dept-metrics { flex-direction: column; width: 100%; align-items: stretch; }
   .lb-metric-time { text-align: center; }
+  .lb-faq-grid { grid-template-columns: 1fr; }
 }

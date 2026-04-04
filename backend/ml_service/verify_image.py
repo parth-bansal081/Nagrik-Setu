@@ -1,8 +1,12 @@
 import os
 import numpy as np
 
-# Suppress noisy TensorFlow logs
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+# Suppress noisy TensorFlow logs and oneDNN warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+import logging
+logging.getLogger('tensorflow').setLevel(logging.FATAL)
 
 try:
     from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions

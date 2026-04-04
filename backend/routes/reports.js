@@ -2,6 +2,9 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const Grievance = require('../models/Grievance');
 const { mapDepartment } = require('../utils/departmentMapper');
+const util = require('util');
+const path = require('path');
+const execPromise = util.promisify(require('child_process').exec);
 
 const router = express.Router();
 
@@ -29,22 +32,71 @@ router.post('/report', async (req, res) => {
 
     const lat = parseFloat(latitude);
     const lng = parseFloat(longitude);
-    const { departmentId, departmentName } = mapDepartment(category);
+    
+    let finalCategory = category;
+    let priority = 0;
+    let aiSeverity = null;
+    let aiConfidence = null;
+    let aiSummary = null;
+    let baseDeadline = calculateDeadline(category);
+
+    if (imageURL) {
+      try {
+        const pythonScript = path.join(__dirname, '../../services/ai_analyzer.py');
+        const { stdout } = await execPromise(`python "${pythonScript}" "${imageURL}"`);
+        
+        const jsonMatch = stdout.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const aiData = JSON.parse(jsonMatch[0]);
+          aiConfidence = aiData.confidence;
+          aiSeverity = aiData.severity;
+          aiSummary = aiData.summary;
+
+          if (aiConfidence > 0.6 && aiData.category) {
+            const aiCatLow = aiData.category.toLowerCase();
+            if (aiCatLow.includes('pothole')) finalCategory = 'Roads';
+            else if (aiCatLow.includes('water')) finalCategory = 'Water Supply';
+            else if (aiCatLow.includes('streetlight')) finalCategory = 'Electricity';
+            else if (aiCatLow.includes('garbage')) finalCategory = 'Others';
+          }
+          
+          if (aiSeverity === 'High') {
+            priority = 1;
+            const now = Date.now();
+            const timeDiff = baseDeadline.getTime() - now;
+            baseDeadline = new Date(now + timeDiff * 0.5); // reduce deadline by 50%
+          }
+        }
+      } catch (aiErr) {
+        console.error('[AI Routing Logic Error]', aiErr.message);
+      }
+    }
+
+    const { departmentId, departmentName } = mapDepartment(finalCategory);
 
     // ── Create the grievance ─────────────────────────────
+    const historyLogs = [makeHistoryEntry('Grievance filed by citizen', 'Citizen', `Category: ${category}`)];
+    if (aiSummary) {
+      historyLogs.push(makeHistoryEntry('AI auto-categorization applied', 'System', `Detected: ${aiSummary}`));
+    }
+
     const grievance = await Grievance.create({
       grievanceId: uuidv4(),
       userId,
       latitude: lat,
       longitude: lng,
       location: { type: 'Point', coordinates: [lng, lat] }, // [lng, lat] for GeoJSON
-      category,
+      category: finalCategory,
       description,
       imageURL: imageURL || null,
       departmentId,
       departmentName,
-      deadline: calculateDeadline(category),
-      history: [makeHistoryEntry('Grievance filed by citizen', 'Citizen', `Category: ${category}`)],
+      deadline: baseDeadline,
+      priority,
+      aiConfidence,
+      aiSeverity,
+      aiSummary,
+      history: historyLogs,
     });
 
     // ── Proximity scan — find nearby Pending reports ─────

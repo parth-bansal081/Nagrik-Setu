@@ -60,6 +60,10 @@ const grievanceSchema = new mongoose.Schema(
     deadline: { type: Date },
     locationVerified: { type: Boolean, default: false },
     isHighPriority: { type: Boolean, default: false },
+    priority: { type: Number, default: 0 },
+    aiSeverity: { type: String, default: null },
+    aiConfidence: { type: Number, default: null },
+    aiSummary: { type: String, default: null },
     internalComments: [{
         text: String,
         author: String,

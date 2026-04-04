@@ -100,6 +100,32 @@ export default function LeaderboardPage() {
             </div>
           ))}
         </section>
+
+        {/* Help & FAQ Section */}
+        <section className="lb-faq">
+          <div className="lb-faq-header">
+            <h2>Help & FAQ</h2>
+            <p>Understanding how Nagrik Setu works</p>
+          </div>
+          <div className="lb-faq-grid">
+            <div className="lb-faq-item">
+              <h4>🤖 How does Auto-Routing work?</h4>
+              <p>When you upload an image, our AI instantly verifies it and auto-routes your grievance to the correct government department (e.g., Water Board, PWD) based on the context and location.</p>
+            </div>
+            <div className="lb-faq-item">
+              <h4>⏱️ What is the Escalation Process?</h4>
+              <p>Every issue category has a strict deadline (e.g., Water Leaks = 24h). If the deadline passes without resolution, the issue is automatically escalated to a higher-ranking Supervising Official, increasing its priority level.</p>
+            </div>
+            <div className="lb-faq-item">
+              <h4>🎯 What happens to duplicates?</h4>
+              <p>If multiple citizens report the exact same issue (like the same pothole), our system detects the duplicate image using ImageHash. Instead of spamming officials, it links the reports and boosts the priority of the original issue!</p>
+            </div>
+            <div className="lb-faq-item">
+              <h4>🌟 How is the Leaderboard calculated?</h4>
+              <p>The leaderboard ranks departments purely on performance: Resolution Rate (Resolved / Total Cases) and Average Resolution Time. Transparency holds everyone accountable.</p>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );
