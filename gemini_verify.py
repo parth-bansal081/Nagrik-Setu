@@ -33,7 +33,7 @@ def analyze_grievance(image_path):
 Use the following JSON format:
 {"category": "issue name", "confidence": float, "severity": "description"}"""
 
-        print("Analyzing with Gemini-3-Flash...")
+        print("Analyzing with AI-detector...")
         response = client.models.generate_content(
             model="gemini-3-flash-preview",
             contents=[uploaded_file, prompt],

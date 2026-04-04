@@ -1,8 +1,8 @@
-console.log(`[BOOT] Nagrik Setu Server Starting at ${new Date().toISOString()}`);
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dns = require('dns').promises;
 
 const reportRoutes = require('./routes/reports');
 
@@ -31,55 +31,59 @@ app.get('/', (_req, res) => {
   });
 });
  
+// Serverless Connection Singleton
+let cachedConnection = null;
+
+const connectDB = async (uri) => {
+  if (cachedConnection && mongoose.connection.readyState === 1) {
+    return cachedConnection;
+  }
+
+  // If already connecting, wait for the existing promise
+  if (mongoose.connection.readyState === 2) {
+    console.log('⏳ Already connecting, waiting...');
+    return new Promise((resolve, reject) => {
+      mongoose.connection.once('connected', () => resolve(mongoose.connection));
+      mongoose.connection.once('error', (err) => reject(err));
+    });
+  }
+
+  console.log('🚀 Initiating new MongoDB connection...');
+  cachedConnection = await mongoose.connect(uri, {
+    serverSelectionTimeoutMS: 5000,
+    connectTimeoutMS: 10000,
+    dbName: 'nagrik_setu',
+    maxPoolSize: 1,
+    family: 4
+  });
+  
+  return cachedConnection;
+};
+
 // Define routes in a separate router to support multiple mount points
 const apiRouter = express.Router();
 
-apiRouter.get('/debug', async (_req, res) => {
-  const uri = process.env.MONGO_URI || '';
-  const maskedUri = uri.length > 20 
-    ? `${uri.substring(0, 15)}...${uri.substring(uri.length - 5)}` 
-    : 'Too short or empty';
-
-  // Force verification of connection
-  let errorInfo = lastMongoError;
-  if (mongoose.connection.readyState !== 1) {
-    try {
-      await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
-      errorInfo = null;
-    } catch (err) {
-      errorInfo = err.message;
-    }
+// Middleware to ensure DB connection for all API routes
+apiRouter.use(async (req, res, next) => {
+  try {
+    const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nagrik_setu';
+    await connectDB(uri);
+    next();
+  } catch (err) {
+    console.error('DB Connection Middleware Error:', err.message);
+    res.status(503).json({ success: false, error: 'Database connection failed' });
   }
-
-  res.json({
-    mongoConnected: mongoose.connection.readyState === 1,
-    mongoReadyState: mongoose.connection.readyState,
-    mongoError: errorInfo,
-    uriPreview: maskedUri,
-    env: {
-      MONGO_URI: !!process.env.MONGO_URI,
-      GOOGLE_API_KEY: !!process.env.GOOGLE_API_KEY,
-      PORT: !!process.env.PORT
-    },
-    nodeVersion: process.version,
-    vercel: !!process.env.VERCEL
-  });
 });
 
 // Attach the existing report routes to the common apiRouter
 apiRouter.use('/', reportRoutes);
 
-// Mount the apiRouter on both paths to satisfy local and Vercel environments
+// Mount the apiRouter on standard paths
 app.use('/api', apiRouter);
 app.use('/_/backend/api', apiRouter);
 
 app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    error: 'Route not found', 
-    attemptedUrl: req.url,
-    originalUrl: req.originalUrl
-  });
+  res.status(404).json({ success: false, error: 'Route not found' });
 });
 
 app.use((err, _req, res, _next) => {
@@ -87,44 +91,23 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ success: false, error: 'Unexpected server error' });
 });
  
-// Lazy-loaded to prevent Vercel startup crashes from imported modules
-const getEscalationJob = () => require('./jobs/escalationJob');
-
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nagrik_setu';
- 
-let lastMongoError = "Connecting..."; // Initial state
-
-console.log('Attempting MongoDB connection...');
-mongoose
-  .connect(MONGO_URI, { 
-    serverSelectionTimeoutMS: 5000, 
-    connectTimeoutMS: 10000
-  })
-  .then(() => {
-    lastMongoError = null;
-    console.log('✅ MongoDB Connected Successfuly');
-  })
-  .catch((err) => {
-    lastMongoError = err.message;
-    console.error('❌ MongoDB connection failed:', err.message);
-  });
-
+// Initial trigger (only in non-Vercel environment)
 const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
 
 if (!isVercel) {
+  const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nagrik_setu';
+  connectDB(MONGO_URI)
+    .then(() => console.log('✅ Local MongoDB Connected'))
+    .catch(err => console.error('❌ Local MongoDB Failed:', err.message));
+
   app.listen(PORT, () => {
     console.log(`🚀 Nagrik Setu API running on http://localhost:${PORT}`);
-    console.log(`   Health:     GET  http://localhost:${PORT}/`);
-    console.log(`   Submit:     POST http://localhost:${PORT}/api/report`);
-    console.log(`   My Reports: GET  http://localhost:${PORT}/api/my-reports/:userId`);
-    console.log(`   Track:      GET  http://localhost:${PORT}/api/report/:grievanceId`);
-    
-    // Now safe to load and start
-    const { startEscalationJob } = getEscalationJob();
+    // Now safe to load and start background jobs
+    const { startEscalationJob } = require('./jobs/escalationJob');
     startEscalationJob();
   });
 } else {
-  console.log('☁️ Running in Vercel Serverless environment. Background Cron Disabled.');
+  console.log('☁️ Running in Vercel Serverless environment.');
 }
 
 module.exports = app;
