@@ -276,7 +276,16 @@ export default function SubmissionPage() {
                   type="file"
                   accept="image/*"
                   className="ns-file-input"
-                  onChange={(e) => setPhotoFile(e.target.files[0] || null)}
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file && file.size > 3 * 1024 * 1024) {
+                      alert('Photo is too large (max 3MB). Please choose a smaller image.');
+                      e.target.value = '';
+                      setPhotoFile(null);
+                    } else {
+                      setPhotoFile(file || null);
+                    }
+                  }}
                 />
               </label>
               {photoFile && (
