@@ -1,0 +1,95 @@
+/* ── DepartmentPerformance Widget ── */
+.dp-widget {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.dp-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.dp-icon { font-size: 1.5rem; }
+
+.dp-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.1rem;
+}
+
+.dp-sub {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.dp-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+}
+
+.dp-tile {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.dp-tile-value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.dp-tile-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.dp-progress-section { }
+
+.dp-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.45rem;
+}
+
+.dp-pct { font-weight: 800; }
+
+.dp-track {
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 50px;
+  overflow: hidden;
+  margin-bottom: 0.45rem;
+}
+
+.dp-fill {
+  height: 100%;
+  border-radius: 50px;
+  transition: width 0.6s ease;
+}
+
+.dp-caption {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  text-align: right;
+}
