@@ -31,16 +31,27 @@ app.get('/', (_req, res) => {
   });
 });
  
- app.get('/api/debug', (_req, res) => {
+ app.get('/api/debug', async (_req, res) => {
    const uri = process.env.MONGO_URI || '';
    const maskedUri = uri.length > 20 
      ? `${uri.substring(0, 15)}...${uri.substring(uri.length - 5)}` 
      : 'Too short or empty';
 
+   // Force verification of connection
+   let errorInfo = lastMongoError;
+   if (mongoose.connection.readyState !== 1) {
+     try {
+       await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
+       errorInfo = null;
+     } catch (err) {
+       errorInfo = err.message;
+     }
+   }
+
    res.json({
      mongoConnected: mongoose.connection.readyState === 1,
-     mongoReadyState: mongoose.connection.readyState, // 0=disc, 1=conn, 2=connecting, 3=disc-ing
-     mongoError: lastMongoError,
+     mongoReadyState: mongoose.connection.readyState,
+     mongoError: errorInfo,
      uriPreview: maskedUri,
      env: {
        MONGO_URI: !!process.env.MONGO_URI,
