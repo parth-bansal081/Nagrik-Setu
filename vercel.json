@@ -8,10 +8,5 @@
       "entrypoint": "backend",
       "routePrefix": "/_/backend"
     }
-  },
-  "functions": {
-    "backend/**/*.js": {
-      "maxDuration": 30
-    }
   }
 }
