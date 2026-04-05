@@ -85,26 +85,26 @@ export default function SubmissionPage() {
     }
 
     const payload = {
-      userId:      DEMO_USER_ID,
-      latitude:    parseFloat(markerPos.lat.toFixed(6)),
-      longitude:   parseFloat(markerPos.lng.toFixed(6)),
+      userId: DEMO_USER_ID,
+      latitude: parseFloat(markerPos.lat.toFixed(6)),
+      longitude: parseFloat(markerPos.lng.toFixed(6)),
       category,
       description,
-      imageURL:    base64Image,
+      imageURL: base64Image,
     };
 
     console.log('📤 Submitting grievance:', JSON.stringify(payload, null, 2));
 
     try {
       const res = await fetch(`${API_BASE}/api/report`, {
-        method:  'POST',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
+        body: JSON.stringify(payload),
       });
 
       const contentType = res.headers.get('content-type');
       let data = {};
-      
+
       if (contentType && contentType.includes('application/json')) {
         data = await res.json();
       }
@@ -137,7 +137,7 @@ export default function SubmissionPage() {
       <header className="ns-header">
         <div className="ns-header-inner">
           <Link to="/" className="ns-logo decoration-transparent">
-            <img src="/logo.png" alt="Nagrik Setu Logo" className="h-12 w-auto object-contain" />
+            <img src="/logo.jpg" alt="Nagrik Setu Logo" className="h-12 w-auto object-contain" />
             <div className="hidden sm:block">
               <h1 className="ns-logo-title">Nagrik Setu</h1>
               <p className="ns-logo-sub">Citizen–Government Bridge</p>

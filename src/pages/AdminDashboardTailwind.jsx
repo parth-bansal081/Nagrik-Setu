@@ -62,7 +62,7 @@ export default function AdminDashboardTailwind() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update status');
-      
+
       // Update local state
       setReports(prev => prev.map(r => r.grievanceId === grievanceId ? data.report : r));
       return true;
@@ -110,8 +110,8 @@ export default function AdminDashboardTailwind() {
     }
   };
 
-  const filteredReports = reports.filter(r => 
-    r.grievanceId.toLowerCase().includes(search.toLowerCase()) || 
+  const filteredReports = reports.filter(r =>
+    r.grievanceId.toLowerCase().includes(search.toLowerCase()) ||
     r.category.toLowerCase().includes(search.toLowerCase()) ||
     (r.departmentName && r.departmentName.toLowerCase().includes(search.toLowerCase()))
   );
@@ -122,7 +122,7 @@ export default function AdminDashboardTailwind() {
       <header className="bg-govnavy text-white shadow-md sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Nagrik Setu Logo" className="h-10 w-auto object-contain brightness-0 invert" />
+            <img src="/logo.jpg" alt="Nagrik Setu Logo" className="h-10 w-auto object-contain brightness-0 invert" />
             <div className="hidden sm:block">
               <h1 className="text-lg font-bold tracking-tight">Nagrik Setu</h1>
               <p className="text-xs text-blue-200 uppercase tracking-widest font-semibold flex items-center gap-1">
@@ -131,14 +131,14 @@ export default function AdminDashboardTailwind() {
             </div>
           </div>
           <div>
-             <Link to="/" className="text-sm font-medium text-blue-200 hover:text-white transition-colors">← Citizen Portal</Link>
+            <Link to="/" className="text-sm font-medium text-blue-200 hover:text-white transition-colors">← Citizen Portal</Link>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Header Section */}
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -146,9 +146,9 @@ export default function AdminDashboardTailwind() {
             <p className="text-sm text-gray-500 mt-1">Review, update, and manage civic issues.</p>
           </div>
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <input 
-              type="text" 
-              placeholder="Search ID, Category, or Dept..." 
+            <input
+              type="text"
+              placeholder="Search ID, Category, or Dept..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full md:w-64 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-govnavy focus:border-transparent transition-shadow"
@@ -198,7 +198,7 @@ export default function AdminDashboardTailwind() {
                 ) : (
                   filteredReports.map((report) => (
                     <tr key={report.grievanceId} className="hover:bg-blue-50 transition-colors">
-                      
+
                       {/* ID & Date */}
                       <td className="px-6 py-4">
                         <div className="font-mono text-xs text-gray-500 bg-gray-100 py-1 px-2 rounded w-max select-all">
@@ -237,9 +237,9 @@ export default function AdminDashboardTailwind() {
 
                       {/* Location */}
                       <td className="px-6 py-4">
-                        <a 
+                        <a
                           href={`https://www.google.com/maps?q=${report.latitude},${report.longitude}`}
-                          target="_blank" 
+                          target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
                         >
@@ -277,7 +277,7 @@ export default function AdminDashboardTailwind() {
               </tbody>
             </table>
           </div>
-          
+
           <div className="bg-gray-50 border-t border-gray-200 px-6 py-4 text-sm text-gray-500 font-medium">
             Showing {filteredReports.length} {filteredReports.length === 1 ? 'record' : 'records'}.
           </div>
@@ -290,28 +290,28 @@ export default function AdminDashboardTailwind() {
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform">
             <div className="bg-govnavy text-white px-6 py-4 flex justify-between items-center">
               <h3 className="font-bold text-lg">Proof of Resolution Required</h3>
-              <button 
+              <button
                 onClick={() => setIsResolveModalOpen(false)}
                 className="text-white hover:text-red-200 text-xl font-bold transition-colors"
                 disabled={resolving}
               >&times;</button>
             </div>
-            
+
             <div className="p-6">
               <p className="text-sm text-gray-600 mb-6">
-                To mark Grievance <strong className="font-mono bg-gray-100 px-1 py-0.5 rounded text-gray-800">{resolvingReport.grievanceId.slice(0,8)}</strong> as <span className="text-green-700 font-bold">Resolved</span>, you must document the fixed issue. Please upload a clear photo of the completed work.
+                To mark Grievance <strong className="font-mono bg-gray-100 px-1 py-0.5 rounded text-gray-800">{resolvingReport.grievanceId.slice(0, 8)}</strong> as <span className="text-green-700 font-bold">Resolved</span>, you must document the fixed issue. Please upload a clear photo of the completed work.
               </p>
 
               <div className="mb-6">
-                <input 
-                  type="file" 
+                <input
+                  type="file"
                   accept="image/*"
                   onChange={handleFileChange}
                   ref={fileInputRef}
                   className="hidden"
                   id="after-photo-upload"
                 />
-                
+
                 {afterPhotoURL ? (
                   <div className="relative group rounded-xl overflow-hidden shadow-inner border border-gray-200 h-48 w-full bg-gray-100">
                     <img src={afterPhotoURL} alt="Proof" className="object-cover w-full h-full" />
@@ -322,8 +322,8 @@ export default function AdminDashboardTailwind() {
                     </div>
                   </div>
                 ) : (
-                  <label 
-                    htmlFor="after-photo-upload" 
+                  <label
+                    htmlFor="after-photo-upload"
                     className="flex flex-col items-center justify-center h-48 w-full border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 hover:border-govnavy transition-colors cursor-pointer group"
                   >
                     <svg className="w-10 h-10 text-gray-400 group-hover:text-govnavy mb-3 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -335,14 +335,14 @@ export default function AdminDashboardTailwind() {
               </div>
 
               <div className="flex gap-3 justify-end items-center mt-8">
-                <button 
+                <button
                   onClick={() => setIsResolveModalOpen(false)}
                   className="px-5 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                   disabled={resolving}
                 >
                   Cancel
                 </button>
-                <button 
+                <button
                   onClick={submitResolve}
                   disabled={!afterPhotoURL || resolving}
                   className="px-5 py-2 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed shadow transition-colors flex items-center gap-2"

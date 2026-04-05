@@ -9,14 +9,14 @@ const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:50
 const FILTERS = ['All', 'Pending', 'In Progress', 'Resolved'];
 
 export default function OfficialDashboard() {
-  const [reports, setReports]         = useState([]);
-  const [stats, setStats]             = useState(null);
-  const [activeFilter, setFilter]     = useState('All');
+  const [reports, setReports] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [activeFilter, setFilter] = useState('All');
   const [selectedReport, setSelected] = useState(null);
-  const [loading, setLoading]         = useState(true);
-  const [error, setError]             = useState(null);
-  const [toast, setToast]             = useState(null);
-  const [resetting, setResetting]     = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [resetting, setResetting] = useState(false);
 
   const fetchReports = useCallback(async () => {
     setLoading(true);
@@ -81,7 +81,7 @@ export default function OfficialDashboard() {
       <header className="od-topbar">
         <div className="od-topbar-inner">
           <div className="od-logo">
-            <img src="/logo.png" alt="Nagrik Setu Logo" className="h-8 w-8 object-contain brightness-0 invert" />
+            <img src="/logo.jpg" alt="Nagrik Setu Logo" className="h-8 w-8 object-contain brightness-0 invert" />
             <div>
               <span className="od-logo-name">Nagrik Setu</span>
               <span className="od-logo-role">Official Dashboard</span>

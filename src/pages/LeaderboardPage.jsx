@@ -32,7 +32,7 @@ export default function LeaderboardPage() {
       <header className="lb-header">
         <div className="lb-header-inner">
           <Link to="/" className="lb-logo decoration-transparent">
-            <img src="/logo.png" alt="Nagrik Setu Logo" className="h-12 w-auto object-contain" />
+            <img src="/logo.jpg" alt="Nagrik Setu Logo" className="h-12 w-auto object-contain" />
             <div>
               <h1 className="lb-logo-title">Nagrik Setu</h1>
               <p className="lb-logo-sub">Public Accountability</p>
@@ -70,7 +70,7 @@ export default function LeaderboardPage() {
         <section className="lb-board">
           {loading && <div className="lb-loading">Gathering data...</div>}
           {error && <div className="lb-error">⚠️ {error}</div>}
-          
+
           {!loading && !error && board.map((dept, idx) => (
             <div className={`lb-dept-card ${idx === 0 ? 'lb-dept-first' : ''}`} key={dept.departmentId}>
               <div className="lb-dept-rank">#{idx + 1}</div>
@@ -78,20 +78,20 @@ export default function LeaderboardPage() {
                 <h3 className="lb-dept-name">{dept.departmentName}</h3>
                 <p className="lb-dept-address">📍 {dept.address}, {dept.district}, {dept.state}</p>
               </div>
-              
+
               <div className="lb-dept-metrics">
                 <div className="lb-metric">
                   <span className="lb-metric-label">Resolution Rate</span>
                   <div className="lb-metric-progress">
-                    <div 
-                      className="lb-progress-bar" 
-                      style={{ width: `${dept.resolutionRate}%`, backgroundColor: dept.resolutionRate > 50 ? '#10b981' : '#f59e0b' }} 
+                    <div
+                      className="lb-progress-bar"
+                      style={{ width: `${dept.resolutionRate}%`, backgroundColor: dept.resolutionRate > 50 ? '#10b981' : '#f59e0b' }}
                     />
                   </div>
                   <span className="lb-metric-val">{dept.resolutionRate}%</span>
                   <span className="lb-metric-sub">{dept.resolvedIssues} / {dept.totalIssues} cases</span>
                 </div>
-                
+
                 <div className="lb-metric lb-metric-time">
                   <span className="lb-metric-label">Avg Resolution Time</span>
                   <span className="lb-metric-val">{dept.avgTimeStr}</span>
