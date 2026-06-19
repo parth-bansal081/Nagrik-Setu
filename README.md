@@ -225,7 +225,7 @@ For the first time, a citizen can see exactly **why** their ward scores a C — 
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/yourusername/nagrik-setu.git
+git clone https://github.com/parth-bansal081/nagrik-setu.git
 cd nagrik-setu
 
 # Frontend
