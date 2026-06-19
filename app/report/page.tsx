@@ -388,7 +388,7 @@ export default function SubmissionPage() {
                   placeholder="e.g. Rahul Sharma"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
               <div className="space-y-1.5">
@@ -399,7 +399,7 @@ export default function SubmissionPage() {
                   placeholder="e.g. 9876543210"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -421,7 +421,7 @@ export default function SubmissionPage() {
                       handleSearch();
                     }
                   }}
-                  className="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
                 <button
                   type="button"
@@ -480,7 +480,7 @@ export default function SubmissionPage() {
                   placeholder="Colony Name, Lane Number, landmark nearby"
                   value={addressText}
                   onChange={(e) => setAddressText(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-xs text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 />
               </div>
 
@@ -492,7 +492,7 @@ export default function SubmissionPage() {
                     placeholder="Chittorgarh"
                     value={addressCity}
                     onChange={(e) => setAddressCity(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-xs text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -502,7 +502,7 @@ export default function SubmissionPage() {
                     placeholder="312001"
                     value={addressPincode}
                     onChange={(e) => setAddressPincode(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-xs text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   />
                 </div>
               </div>
@@ -515,7 +515,7 @@ export default function SubmissionPage() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white"
                 >
                   <option value="Roads">Roads (PWD)</option>
                   <option value="Water Supply">Water Supply (Jal Shakti)</option>
@@ -532,7 +532,7 @@ export default function SubmissionPage() {
                   placeholder="Provide a detailed description of the infrastructure damage..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                 />
               </div>
             </div>
