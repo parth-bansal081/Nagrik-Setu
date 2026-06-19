@@ -1,0 +1,51 @@
+{
+  "title": "Nagrik Setu — The Bridge of Trust",
+  "citizen": {
+    "submit_title": "Report a Civic Issue",
+    "name": "Your Name",
+    "phone": "Phone Number",
+    "location": "Pin your location on the map",
+    "category": "Category",
+    "description": "Describe the issue",
+    "photo": "Upload Evidence Photo (required)",
+    "submit_btn": "Submit Complaint",
+    "success_title": "Complaint Registered",
+    "grievance_id": "Your Grievance ID",
+    "copy_id": "Copy ID",
+    "ai_review": "AI agents are analyzing your complaint.",
+    "track_btn": "Track My Complaint →"
+  },
+  "categories": {
+    "roads": "Roads",
+    "water": "Water Supply",
+    "electricity": "Electricity",
+    "others": "Others"
+  },
+  "nav": {
+    "home": "Home",
+    "report": "📍 Report",
+    "track": "🔍 Track",
+    "accountability": "📊 Accountability Index",
+    "admin": "🏛️ Official Dashboard"
+  },
+  "home": {
+    "hero_title": "Citizens & Authority: Bridging the Gap of Trust",
+    "hero_subtitle": "India's first multi-agent civic intelligence platform. Report local infrastructure damage, automate routing to departments, and track verified resolutions in real time.",
+    "cta_report": "Report Civic Issue",
+    "cta_track": "Track Grievance",
+    "how_title": "How Nagrik Setu Works",
+    "how_subtitle": "A transparent, multi-agent AI pipeline driving public infrastructure resolution.",
+    "step1_title": "1. Report Issue",
+    "step1_desc": "Pin coordinates on the map and upload a photo of the damaged infrastructure.",
+    "step2_title": "2. AI Validation",
+    "step2_desc": "Vision agents check photo validity, identify damage severity, and filter spam.",
+    "step3_title": "3. Auto Routing",
+    "step3_desc": "Routing agents assign issues to PWD, Jal Shakti, or DISCOM with strict SLA deadlines.",
+    "step4_title": "4. Verification Lock",
+    "step4_desc": "Resolutions are verified via before/after photos and on-site GPS telemetry checks.",
+    "stats_title": "Chittorgarh Civic Analytics",
+    "stats_subtitle": "Real-time metrics aggregated directly from database audits.",
+    "recent_title": "Live Grievance Activity",
+    "recent_subtitle": "Latest community updates and automated agent actions."
+  }
+}

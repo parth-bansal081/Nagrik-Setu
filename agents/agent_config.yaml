@@ -1,0 +1,17 @@
+# agent_config.yaml
+agents:
+  vision:
+    agent_id: ${BAND_VISION_AGENT_ID}
+    api_key: ${BAND_VISION_API_KEY}
+
+  routing:
+    agent_id: ${BAND_ROUTING_AGENT_ID}
+    api_key: ${BAND_ROUTING_API_KEY}
+
+  watchdog:
+    agent_id: ${BAND_WATCHDOG_AGENT_ID}
+    api_key: ${BAND_WATCHDOG_API_KEY}
+
+  verification:
+    agent_id: ${BAND_VERIFICATION_AGENT_ID}
+    api_key: ${BAND_VERIFICATION_API_KEY}

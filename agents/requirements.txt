@@ -1,0 +1,4 @@
+band-sdk
+google-generativeai
+supabase
+python-dotenv
