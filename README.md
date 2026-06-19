@@ -10,7 +10,7 @@ Report. Verify. Route. Track. Resolve. — All automated. All accountable.
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-nagrik--setu.railway.app-1A3A5C?style=for-the-badge)](https://nagrik-setu.railway.app)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-nagrik--setu.railway.app-1A3A5C?style=for-the-badge)](https://nagrik-setu-production.up.railway.app/)
 [![Band SDK](https://img.shields.io/badge/Powered_by-Band_SDK-F97316?style=for-the-badge)](https://band.ai)
 [![Gemini Flash](https://img.shields.io/badge/AI-Gemini_Flash_1.5-4285F4?style=for-the-badge)](https://aistudio.google.com)
 [![Supabase](https://img.shields.io/badge/DB-Supabase_+_PostGIS-3ECF8E?style=for-the-badge)](https://supabase.com)
